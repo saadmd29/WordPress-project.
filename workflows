@@ -1,13 +1,40 @@
-- name: Deploy to server
-  env:
-    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    SERVER_ADDRESS: ${{ secrets.SERVER_ADDRESS }}
-    SERVER_USER: ${{ secrets.SERVER_USER }}
-  runs-on: ubuntu-latest
-  steps:
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: 16  # Use Node.js version 16
+name: Deploy to Server
 
-    # Rest of your workflow steps...
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name as needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # Use an Ubuntu runner
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to server
+        run: |
+          # Replace the following placeholders with your server details
+          SERVER_ADDRESS="cloudpals.sytes.net"
+          SERVER_USER="dexter"
+          
+          # Navigate to the project directory on your server
+          ssh $ubuntu@$15.206.28.70 "cd /var/www/html/wordpress"
+          
+          # Pull the latest code from your repository
+          ssh $ubuntu@$15.206.28.70 "git pull origin main"
+
+          # Additional deployment steps, e.g., database migrations
+          # ssh $ubuntu@$15.206.28.70 "php artisan migrate"
+
+          # Restart Nginx and PHP-FPM
+          ssh $SERVER_USER@$SERVER_ADDRESS "sudo systemctl restart nginx"
+          ssh $SERVER_USER@$SERVER_ADDRESS "sudo systemctl restart php7.4-fpm"  # Adjust the PHP version
+
+# Add any additional steps or customizations as needed
