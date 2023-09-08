@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest  # Use an Ubuntu runner
 
     steps:
+      - name: Trust the server's host key
+        run: |
+        ssh-keyscan 15.206.28.70 >> $HOME/.ssh/known_hosts
+        # Ensure the path to the known hosts file is correct
+
       - name: Checkout code
         uses: actions/checkout@v2
 
