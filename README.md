@@ -35,4 +35,4 @@ This project demonstrates an automated deployment process for a WordPress websit
 - Clone this repository to your local development environment.
 
 ```bash
-git clone https://github.com/your-username/wordpress-nginx-lemp-deployment.git
+git clone git@github.com:saadmd29/WordPress-project..git
