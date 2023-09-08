@@ -36,4 +36,7 @@ This project demonstrates an automated deployment process for a WordPress websit
 
 ```bash
 git clone git@github.com:saadmd29/WordPress-project..git
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
