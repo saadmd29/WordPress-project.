@@ -3,26 +3,11 @@
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     SERVER_ADDRESS: ${{ secrets.SERVER_ADDRESS }}
     SERVER_USER: ${{ secrets.SERVER_USER }}
-  run: |
-    # Set up SSH key for server access
-    echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    chmod 600 ~/.ssh/id_rsa
+  runs-on: ubuntu-latest
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 16  # Use Node.js version 16
 
-    # Disable strict host key checking
-    echo "StrictHostKeyChecking no" >> ~/.ssh/config
-
-    # SSH into the server and deploy
-    ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa $SERVER_USER@$SERVER_ADDRESS << EOF
-      # Navigate to the web root directory
-      cd /var/www/html
-
-      # Pull the latest code from the repository
-      git pull origin main
-
-      # Perform any additional deployment tasks (e.g., database migrations)
-      # Example: php artisan migrate
-
-      # Restart services (e.g., Nginx, PHP-FPM)
-      sudo service nginx restart
-      sudo service php7.4-fpm restart
-    EOF
+    # Rest of your workflow steps...
